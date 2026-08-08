@@ -275,7 +275,7 @@ curl -s http://localhost:8000/actuator/prometheus | head -30
 ### 消息发送失败
 
 | 现象 | 排查命令 | 常见原因 |
-|:-----|:---------|:---------|
+|-----|---------|---------|
 | 401 Unauthorized | `echo $TOKEN_A` | token 过期或为空 |
 | 400 Bad Request | 检查请求体 JSON 格式 | fromId/toId 大小写错误 |
 | 500 Internal Error | `docker logs vela-service --tail 50` | MySQL 连接断开 |
@@ -321,7 +321,7 @@ docker logs -f vela-service
 ### ✅ 通过标准（全部满足）
 
 | 检查项 | 判定 | 验证方式 |
-|:-------|:----|:---------|
+|-------|----|---------|
 | 服务全部 Up | ✅ | `docker ps` |
 | 注册/登录 | ✅ | API 返回 200 + token |
 | 添加好友 | ✅ | `getAllFriend` 返回对方 |

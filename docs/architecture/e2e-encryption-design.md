@@ -230,7 +230,7 @@ A 发起                         服务端                          B
 
 ```
 条件：每 100 条消息 或 超过 1 周（只要发过至少 1 条消息）
-  
+
 流程：
   A ── RequestKey(交换ID, g_a) ─────────────▶ B
   A ◀── AcceptKey(交换ID, g_b, fingerprint) ── B

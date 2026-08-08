@@ -43,5 +43,10 @@ build/
 .vscode/
 
 ### Mac OS ###
-.DS_Store.atomcode/
-phase1_result.json
+.DS_Store
+
+### AI 工具 / 本地状态 ###
+.atomcode/
+.workbuddy/
+.mvn/
+uploads/

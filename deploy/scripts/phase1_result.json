@@ -1,0 +1,118 @@
+{
+  "test_time": "2026-08-09T02:02:38.578954",
+  "gateway": "http://127.0.0.1:8889",
+  "appId": 10000,
+  "total": 11,
+  "passed": 11,
+  "results": {
+    "import_user_a": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [
+          "test_conn_a"
+        ],
+        "errorId": []
+      },
+      "ok": true
+    },
+    "import_user_b": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [
+          "test_conn_b"
+        ],
+        "errorId": []
+      },
+      "ok": true
+    },
+    "import_friend_a_to_b": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [
+          "test_conn_b"
+        ],
+        "errorId": []
+      },
+      "ok": true
+    },
+    "import_friend_b_to_a": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [
+          "test_conn_a"
+        ],
+        "errorId": []
+      },
+      "ok": true
+    },
+    "check_friend": {
+      "code": 200,
+      "msg": "success",
+      "data": [
+        {
+          "fromId": "test_conn_a",
+          "toId": "test_conn_b",
+          "status": 1
+        }
+      ],
+      "ok": true
+    },
+    "login_a": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "ip": "192.168.101.1",
+        "port": 9000
+      },
+      "ok": true
+    },
+    "login_b": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "ip": "192.168.101.1",
+        "port": 9000
+      },
+      "ok": true
+    },
+    "check_send": {
+      "code": 200,
+      "msg": "success",
+      "data": null,
+      "ok": true
+    },
+    "send_message": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "messageKey": 503130582220801,
+        "messageTime": 1786212157433
+      },
+      "ok": true
+    },
+    "sync_message_b": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "maxSequence": 0,
+        "dataList": [],
+        "completed": false
+      },
+      "ok": true
+    },
+    "sync_message_a": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "maxSequence": 0,
+        "dataList": [],
+        "completed": false
+      },
+      "ok": true
+    }
+  }
+}
