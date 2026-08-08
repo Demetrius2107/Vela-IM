@@ -1,1 +1,0 @@
-- ImGroupMemberService 接口的返回类型需要明确指定泛型，但当前实现中部分方法（如 addGroupMember, removeGroupMember）仍使用了无泛型的 Result，需修正为 Result<...> 以符合项目标准。
