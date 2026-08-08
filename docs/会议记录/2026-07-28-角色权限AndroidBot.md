@@ -31,7 +31,7 @@
 ### 3. Bot 深挖
 
 | 功能 | 状态 |
-|------|:----:|
+|------|----|
 | 回复富文本 | ✅ Webhook JSON 响应解析（type/content/fileUrl）|
 | 图片/文件回复 | ✅ `sendReply` 支持 `fileUrl` + `fileType` 透传 |
 | 群聊 @Bot | ✅ `handleGroupMention` 方法 |

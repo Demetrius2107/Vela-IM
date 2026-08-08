@@ -48,7 +48,7 @@ docker-compose ps
 ## 三、服务总览
 
 | 服务 | 容器名 | 端口 | 说明 |
-|:----|:------|:----:|:-----|
+|----|------|----|-----|
 | MySQL | vela-mysql | 3307 | 业务数据库 |
 | Redis | vela-redis | 6379 | 缓存/离线消息/序列号 |
 | RabbitMQ | vela-rabbitmq | 5672 | 消息队列 |
@@ -69,7 +69,7 @@ docker-compose ps
 ## 四、访问入口
 
 | 入口 | 地址 | 说明 |
-|:----|:-----|:-----|
+|----|-----|-----|
 | IM Web 端 | http://localhost:3000 | 完整 IM 客户端 |
 | 管理后台 | http://localhost:3000/#/admin | 运营管理界面 |
 | Kibana | http://localhost:5601 | 日志检索 |
@@ -103,7 +103,7 @@ docker-compose up -d elasticsearch kibana logstash
 vela-service 的环境变量配置：
 
 | 变量 | 默认值 | 说明 |
-|:----|:-------|:-----|
+|----|-------|-----|
 | `SPRING_DATASOURCE_URL` | jdbc:mysql://mysql:3306/vela | 数据库连接 |
 | `SPRING_DATASOURCE_USERNAME` | root | 数据库用户 |
 | `SPRING_DATASOURCE_PASSWORD` | root | 数据库密码 |
@@ -118,7 +118,7 @@ vela-service 的环境变量配置：
 首次启动时，MySQL 容器会自动执行初始化脚本：
 
 | 脚本 | 内容 |
-|:----|:-----|
+|----|-----|
 | `docs/MySQL/vela-study.sql` | 建表 DDL（12 张核心表）|
 | `docs/MySQL/vela-send.sql` | 测试数据 |
 
@@ -134,7 +134,7 @@ docker-compose up -d      # 重新启动
 ## 八、常见问题
 
 | 问题 | 原因 | 解决 |
-|:----|:-----|:-----|
+|----|-----|-----|
 | 端口被占用 | 本地已有服务占用 3306/6379/9200 等 | 修改 docker-compose.yml 映射端口 |
 | MySQL 连不上 | 启动顺序问题 | 等 30s 后重试 |
 | ES 内存不足 | 默认分配 512MB 不够 | 调整 `ES_JAVA_OPTS=-Xms1g -Xmx1g` |

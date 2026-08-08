@@ -62,7 +62,7 @@
 ### 2.1 模块清单
 
 | 模块 | 端口 | 职责 | 技术栈 |
-|:-----|:----:|:-----|:-------|
+|-----|----|-----|-------|
 | `vela-codec` | — | TCP 协议编解码，消息 Pack 定义 | Netty + Protostuff |
 | `vela-common` | — | 共享类型、常量、错误码、工具类 | Spring Boot |
 | `vela-tcp` | 9000/19000 | TCP/WebSocket 网关，连接管理，消息路由 | Netty |
@@ -73,7 +73,7 @@
 ### 2.2 业务域（vela-service 内部）
 
 | 子域 | 包路径 | 核心职责 |
-|:-----|:-------|:---------|
+|-----|-------|---------|
 | user | `service/user` | 用户注册/登录/资料管理/在线状态 |
 | friendship | `service/friendship` | 好友添加/删除/黑名单/分组 |
 | group | `service/group` | 群组 CRUD/成员管理/群聊消息 |
@@ -167,7 +167,7 @@ vela-tcp ─────────────────────▶│
 ## 四、技术选型
 
 | 层 | 技术 | 版本 | 选型理由 |
-|:---|:-----|:----|:---------|
+|---|-----|----|---------|
 | 语言 | Java + Kotlin | 17+1.9 | 生态成熟 + Android 原生 |
 | TCP 框架 | Netty | 4.x | IM 行业标准，百万连接支撑 |
 | 协议编解码 | Protostuff | — | 高性能二进制序列化 |
@@ -252,7 +252,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
 ## 六、数据库核心表
 
 | 表名 | 说明 | 模块 |
-|:-----|:-----|:-----|
+|-----|-----|-----|
 | `im_user_data` | 用户数据 | user |
 | `im_friendship` | 好友关系 | friendship |
 | `im_friendship_group` | 好友分组 | friendship |
@@ -276,7 +276,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
 ## 七、关键设计决策
 
 | 决策 | 选项 | 选择 | 原因 |
-|:-----|:-----|:-----|:------|
+|-----|-----|-----|------|
 | 网关协议 | HTTP vs TCP | TCP + WS | IM 实时推送必须长连接 |
 | 序列化 | JSON vs Protostuff | Protostuff | 二进制，体积小 60%，性能高 3x |
 | 消息存储 | 写扩散 vs 读扩散 | 写扩散 | 群聊写 1 次 vs 读拉取 N 次，写扩散快 |
@@ -289,7 +289,7 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
 ## 八、同类型 IM 对比
 
 | 维度 | Vela | Teamtalk(Momo) | Tim(腾讯) |
-|:-----|:-----|:---------------|:----------|
+|-----|-----|---------------|----------|
 | 协议 | TCP+Protostuff | TCP+Protobuf | 私有协议 |
 | 网关 | Netty 自研 | Netty 自研 | 自研 |
 | 存储 | MySQL+ES | MySQL+ES | 自研 |
