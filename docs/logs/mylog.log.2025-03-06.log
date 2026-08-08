@@ -1,0 +1,12 @@
+2025-03-06 22:04:42 -Starting Application on mingli with PID 305536 (G:\IM-System\IM-System\im-service\target\classes started by Elon in G:\IM-System\IM-System)
+2025-03-06 22:04:42 -For Jackson Kotlin classes support please add "com.fasterxml.jackson.module:jackson-module-kotlin" to the classpath
+2025-03-06 22:04:42 -The following profiles are active: dev
+2025-03-06 22:04:43 -Multiple Spring Data modules found, entering strict repository configuration mode!
+2025-03-06 22:04:43 -Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-03-06 22:04:43 -Finished Spring Data repository scanning in 57ms. Found 0 Redis repository interfaces.
+2025-03-06 22:04:43 -Tomcat initialized with port(s): 8000 (http)
+2025-03-06 22:04:43 -Initializing ProtocolHandler ["http-nio-8000"]
+2025-03-06 22:04:43 -Starting service [Tomcat]
+2025-03-06 22:04:43 -Starting Servlet engine: [Apache Tomcat/9.0.37]
+2025-03-06 22:04:44 -Initializing Spring embedded WebApplicationContext
+2025-03-06 22:04:44 -Root WebApplicationContext: initialization completed in 1428 ms

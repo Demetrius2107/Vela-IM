@@ -1,0 +1,79 @@
+2024-10-12 16:55:01 -Starting ImServiceApplication on mingli with PID 26312 (E:\Practice\im-system\im-service\target\classes started by Lenovo in E:\Practice\im-system)
+2024-10-12 16:55:01 -The following profiles are active: dev
+2024-10-12 16:55:02 -Tomcat initialized with port(s): 8000 (http)
+2024-10-12 16:55:02 -Initializing ProtocolHandler ["http-nio-8000"]
+2024-10-12 16:55:02 -Starting service [Tomcat]
+2024-10-12 16:55:02 -Starting Servlet engine: [Apache Tomcat/9.0.37]
+2024-10-12 16:55:02 -Initializing Spring embedded WebApplicationContext
+2024-10-12 16:55:02 -Root WebApplicationContext: initialization completed in 861 ms
+2024-10-12 16:55:04 -Initializing ExecutorService 'applicationTaskExecutor'
+2024-10-12 16:55:04 -Starting ProtocolHandler ["http-nio-8000"]
+2024-10-12 16:55:04 -Tomcat started on port(s): 8000 (http) with context path ''
+2024-10-12 16:55:04 -Started ImServiceApplication in 3.878 seconds (JVM running for 5.821)
+2024-10-12 16:55:25 -Shutting down ExecutorService 'applicationTaskExecutor'
+2024-10-12 16:55:28 -Starting ImServiceApplication on mingli with PID 32968 (E:\Practice\im-system\im-service\target\classes started by Lenovo in E:\Practice\im-system)
+2024-10-12 16:55:28 -The following profiles are active: dev
+2024-10-12 16:55:29 -Tomcat initialized with port(s): 8000 (http)
+2024-10-12 16:55:29 -Initializing ProtocolHandler ["http-nio-8000"]
+2024-10-12 16:55:29 -Starting service [Tomcat]
+2024-10-12 16:55:29 -Starting Servlet engine: [Apache Tomcat/9.0.37]
+2024-10-12 16:55:29 -Initializing Spring embedded WebApplicationContext
+2024-10-12 16:55:29 -Root WebApplicationContext: initialization completed in 728 ms
+2024-10-12 16:55:31 -Initializing ExecutorService 'applicationTaskExecutor'
+2024-10-12 16:55:31 -Starting ProtocolHandler ["http-nio-8000"]
+2024-10-12 16:55:32 -Tomcat started on port(s): 8000 (http) with context path ''
+2024-10-12 16:55:32 -Started ImServiceApplication in 3.479 seconds (JVM running for 5.216)
+2024-10-12 17:01:04 -Starting ImServiceApplication on mingli with PID 10644 (E:\Practice\im-system\im-service\target\classes started by Lenovo in E:\Practice\im-system)
+2024-10-12 17:01:04 -The following profiles are active: dev
+2024-10-12 17:01:04 -Tomcat initialized with port(s): 8000 (http)
+2024-10-12 17:01:04 -Initializing ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:01:04 -Starting service [Tomcat]
+2024-10-12 17:01:04 -Starting Servlet engine: [Apache Tomcat/9.0.37]
+2024-10-12 17:01:04 -Initializing Spring embedded WebApplicationContext
+2024-10-12 17:01:04 -Root WebApplicationContext: initialization completed in 758 ms
+2024-10-12 17:01:07 -Initializing ExecutorService 'applicationTaskExecutor'
+2024-10-12 17:01:07 -Starting ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:01:07 -Tomcat started on port(s): 8000 (http) with context path ''
+2024-10-12 17:01:07 -Started ImServiceApplication in 3.563 seconds (JVM running for 5.285)
+2024-10-12 17:24:07 -Starting ImServiceApplication on mingli with PID 13272 (E:\Practice\im-system\im-service\target\classes started by Lenovo in E:\Practice\im-system)
+2024-10-12 17:24:07 -The following profiles are active: dev
+2024-10-12 17:24:08 -Tomcat initialized with port(s): 8000 (http)
+2024-10-12 17:24:08 -Initializing ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:24:08 -Starting service [Tomcat]
+2024-10-12 17:24:08 -Starting Servlet engine: [Apache Tomcat/9.0.37]
+2024-10-12 17:24:08 -Initializing Spring embedded WebApplicationContext
+2024-10-12 17:24:08 -Root WebApplicationContext: initialization completed in 941 ms
+2024-10-12 17:24:10 -Initializing ExecutorService 'applicationTaskExecutor'
+2024-10-12 17:24:10 -Starting ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:24:10 -Tomcat started on port(s): 8000 (http) with context path ''
+2024-10-12 17:24:10 -Started ImServiceApplication in 3.951 seconds (JVM running for 5.69)
+2024-10-12 17:24:18 -Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-12 17:24:18 -Initializing Servlet 'dispatcherServlet'
+2024-10-12 17:24:18 -Completed initialization in 5 ms
+2024-10-12 17:24:18 -HikariPool-1 - Starting...
+2024-10-12 17:24:18 -HikariPool-1 - Start completed.
+2024-10-12 17:34:38 -Starting ImServiceApplication on mingli with PID 36400 (E:\Practice\im-system\im-service\target\classes started by Lenovo in E:\Practice\im-system)
+2024-10-12 17:34:38 -The following profiles are active: dev
+2024-10-12 17:34:39 -Tomcat initialized with port(s): 8000 (http)
+2024-10-12 17:34:39 -Initializing ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:34:39 -Starting service [Tomcat]
+2024-10-12 17:34:39 -Starting Servlet engine: [Apache Tomcat/9.0.37]
+2024-10-12 17:34:39 -Initializing Spring embedded WebApplicationContext
+2024-10-12 17:34:39 -Root WebApplicationContext: initialization completed in 816 ms
+2024-10-12 17:34:41 -Initializing ExecutorService 'applicationTaskExecutor'
+2024-10-12 17:34:41 -Starting ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:34:41 -Tomcat started on port(s): 8000 (http) with context path ''
+2024-10-12 17:34:41 -Started ImServiceApplication in 3.642 seconds (JVM running for 5.33)
+2024-10-12 17:55:17 -Starting ImServiceApplication on mingli with PID 23984 (E:\Practice\im-system\im-service\target\classes started by Lenovo in E:\Practice\im-system)
+2024-10-12 17:55:17 -The following profiles are active: dev
+2024-10-12 17:55:17 -Tomcat initialized with port(s): 8000 (http)
+2024-10-12 17:55:17 -Initializing ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:55:17 -Starting service [Tomcat]
+2024-10-12 17:55:17 -Starting Servlet engine: [Apache Tomcat/9.0.37]
+2024-10-12 17:55:17 -Initializing Spring embedded WebApplicationContext
+2024-10-12 17:55:17 -Root WebApplicationContext: initialization completed in 805 ms
+2024-10-12 17:55:20 -Initializing ExecutorService 'applicationTaskExecutor'
+2024-10-12 17:55:20 -Starting ProtocolHandler ["http-nio-8000"]
+2024-10-12 17:55:20 -Tomcat started on port(s): 8000 (http) with context path ''
+2024-10-12 17:55:20 -Started ImServiceApplication in 3.737 seconds (JVM running for 5.384)
+2024-10-12 19:40:21 -Shutting down ExecutorService 'applicationTaskExecutor'

@@ -1,0 +1,115 @@
+{
+  "test_time": "2026-08-09T00:51:13.215355",
+  "gateway": "http://127.0.0.1:8889",
+  "appId": 10000,
+  "total": 11,
+  "passed": 7,
+  "results": {
+    "import_user_a": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [],
+        "errorId": [
+          "test_conn_a"
+        ]
+      },
+      "ok": true
+    },
+    "import_user_b": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [],
+        "errorId": [
+          "test_conn_b"
+        ]
+      },
+      "ok": true
+    },
+    "import_friend_a_to_b": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [],
+        "errorId": [
+          "test_conn_b"
+        ]
+      },
+      "ok": true
+    },
+    "import_friend_b_to_a": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "successId": [],
+        "errorId": [
+          "test_conn_a"
+        ]
+      },
+      "ok": true
+    },
+    "check_friend": {
+      "code": 200,
+      "msg": "success",
+      "data": [
+        {
+          "fromId": "test_conn_a",
+          "toId": "test_conn_b",
+          "status": 1
+        }
+      ],
+      "ok": true
+    },
+    "login_a": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "ip": "192.168.101.1",
+        "port": 9000
+      },
+      "ok": true
+    },
+    "login_b": {
+      "code": 200,
+      "msg": "success",
+      "data": {
+        "ip": "192.168.101.1",
+        "port": 9000
+      },
+      "ok": true
+    },
+    "check_send": {
+      "timestamp": "2026-08-08T16:51:12.570+00:00",
+      "path": "/v1/message/checkSend",
+      "status": 500,
+      "error": "Internal Server Error",
+      "message": "",
+      "requestId": "7ac33aeb-8"
+    },
+    "send_message": {
+      "timestamp": "2026-08-08T16:51:12.669+00:00",
+      "path": "/v1/message/send",
+      "status": 500,
+      "error": "Internal Server Error",
+      "message": "",
+      "requestId": "7ac33aeb-9"
+    },
+    "sync_message_b": {
+      "timestamp": "2026-08-08T16:51:13.196+00:00",
+      "path": "/v1/message/syncOfflineMessage",
+      "status": 500,
+      "error": "Internal Server Error",
+      "message": "",
+      "requestId": "7ac33aeb-10"
+    },
+    "sync_message_a": {
+      "timestamp": "2026-08-08T16:51:13.208+00:00",
+      "path": "/v1/message/syncOfflineMessage",
+      "status": 500,
+      "error": "Internal Server Error",
+      "message": "",
+      "requestId": "7ac33aeb-11"
+    }
+  }
+}
