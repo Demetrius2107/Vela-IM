@@ -170,16 +170,20 @@ class TcpTestClient:
         log_send(CMD_LOGIN, f'{{"userId": "{self.user_id}"}}')
         body = {"userId": self.user_id}
         self.send_packet(CMD_LOGIN, body)
-        cmd, resp = self.recv_packet()
-        if cmd == CMD_LOGIN_ACK:
-            log_recv(CMD_LOGIN_ACK, resp)
-            return True, resp
-        elif cmd is not None:
-            log_recv(cmd, resp or {})
-            return False, resp
-        else:
-            log("  [FAIL] No response (connection closed?)", Color.RED)
-            return False, {"error": "timeout"}
+        # 先尝试非阻塞读取，诊断服务端是否有任何响应
+        self.sock.settimeout(3)
+        try:
+            raw = self.sock.recv(256)
+            if raw:
+                log(f"  [DEBUG] Received {len(raw)} raw bytes: {raw.hex()}", Color.YELLOW)
+            else:
+                log(f"  [DEBUG] recv returned empty (connection closed by server)", Color.YELLOW)
+            self.sock.settimeout(5)
+            return None, {"error": "debug"}
+        except socket.timeout:
+            log(f"  [DEBUG] No bytes received within 3s (server not responding)", Color.YELLOW)
+            self.sock.settimeout(5)
+            return None, {"error": "timeout_no_bytes"}
 
     def send_message(self, to_id, content):
         """发送 P2P 消息"""
