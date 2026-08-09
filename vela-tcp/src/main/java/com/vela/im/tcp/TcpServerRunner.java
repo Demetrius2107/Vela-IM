@@ -55,16 +55,11 @@ public class TcpServerRunner implements CommandLineRunner {
             return;
         }
 
-        // 启动 TCP 和 WebSocket 网关
-        log.info("Starting TCP server on port: {}", tcpConfig.getTcpPort());
-        new LimServer(tcpConfig).start();
-        new LimWebSocketServer(tcpConfig).start();
-
-        // 初始化 Redis
+        // 初始化 Redis（必须在 Netty 启动之前）
         log.info("Initializing Redis connection");
         RedisManager.init(bootStrapConfig);
 
-        // 初始化 RabbitMQ
+        // 初始化 RabbitMQ（必须在 Netty 启动之前）
         if (tcpConfig.getRabbitmqConfig() != null) {
             log.info("Initializing RabbitMQ connection");
             MqFactory.init(tcpConfig.getRabbitmqConfig());
@@ -73,6 +68,11 @@ public class TcpServerRunner implements CommandLineRunner {
         // 初始化消息接收器
         log.info("Initializing message receiver for brokerId: {}", tcpConfig.getBrokerId());
         MessageReceiver.init(tcpConfig.getBrokerId() + "");
+
+        // 启动 TCP 和 WebSocket 网关（放在 Redis/MQ 初始化之后）
+        log.info("Starting TCP server on port: {}", tcpConfig.getTcpPort());
+        new LimServer(tcpConfig).start();
+        new LimWebSocketServer(tcpConfig).start();
 
         // ZooKeeper 注册
         log.info("Registering to ZooKeeper");
