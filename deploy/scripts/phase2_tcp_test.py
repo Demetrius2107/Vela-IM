@@ -66,13 +66,13 @@ def log(msg, color=""):
     print(f"{color}[{ts}] {msg}{Color.END}")
 
 
-def log_send(command_hex, body_str):
-    log(f"  >>> SEND command=0x{command_hex:04X} body={body_str}", Color.CYAN)
+def log_send(cmd_code, body_str):
+    log(f"  >>> SEND command=0x{cmd_code:04X} body={body_str}", Color.CYAN)
 
 
-def log_recv(command_hex, payload):
+def log_recv(cmd_code, payload):
     body_str = json.dumps(payload, ensure_ascii=False) if isinstance(payload, dict) else str(payload)
-    log(f"  <<< RECV command=0x{command_hex:04X} body={body_str[:200]}", Color.YELLOW)
+    log(f"  <<< RECV command=0x{cmd_code:04X} body={body_str[:200]}", Color.YELLOW)
 
 
 # ==================== TCP 客户端 ====================
@@ -167,15 +167,15 @@ class TcpTestClient:
 
     def login(self):
         """登录"""
-        log_send("0x2328", f'{{"userId": "{self.user_id}"}}')
+        log_send(CMD_LOGIN, f'{{"userId": "{self.user_id}"}}')
         body = {"userId": self.user_id}
         self.send_packet(CMD_LOGIN, body)
         cmd, resp = self.recv_packet()
         if cmd == CMD_LOGIN_ACK:
-            log_recv("0x2329", resp)
+            log_recv(CMD_LOGIN_ACK, resp)
             return True, resp
         elif cmd is not None:
-            log_recv(f"0x{cmd:04X}", resp or {})
+            log_recv(cmd, resp or {})
             return False, resp
         else:
             log("  [FAIL] No response (connection closed?)", Color.RED)
@@ -192,14 +192,14 @@ class TcpTestClient:
             "messageTime": int(time.time()),
             "messageBody": content,
         }
-        log_send("0x44F", json.dumps(body, ensure_ascii=False)[:100])
+        log_send(CMD_MSG_P2P, json.dumps(body, ensure_ascii=False)[:100])
         self.send_packet(CMD_MSG_P2P, body)
         cmd, resp = self.recv_packet()
         if cmd == CMD_MSG_ACK:
-            log_recv("0x416", resp)
+            log_recv(CMD_MSG_ACK, resp)
             return True, resp
         elif cmd is not None:
-            log_recv(f"0x{cmd:04X}", resp or {})
+            log_recv(cmd, resp or {})
             return False, resp
         else:
             log("  [FAIL] No ACK received", Color.RED)
