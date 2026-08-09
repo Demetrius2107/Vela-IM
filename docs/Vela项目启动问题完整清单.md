@@ -280,3 +280,32 @@ Mapper XML 中的表名使用 `im_` 前缀，但数据库实际表名为 `vela_`
 3. CI 中加入各模块的启动检查
 4. message 模块的跨服务直接依赖应改为 Feign 客户端
 5. 升级 Spring Boot 到 2.5+ 以支持更高版本 Java 字节码
+
+---
+
+## 十一、Phase 2 TCP 协议测试发现的问题（2026-08-09 新增）
+
+### 11.1 初始化顺序错误 → redissonClient NPE
+
+| 项目 | 详情 |
+|------|------|
+| **文件** | `vela-tcp/.../TcpServerRunner.java` |
+| **问题** | `LimServer.start()` 先启动 Netty 接受连接，`RedisManager.init()` 在后面才初始化 Redis |
+| **后果** | 客户端登录时 `RedisManager.getRedissonClient()` 返回 null → NPE → 连接被关闭 |
+| **修复** | 调整初始化顺序：Redis → MQ → MessageReceiver → Netty |
+
+### 11.2 TCP 模块无 Spring Boot 容器
+
+| 项目 | 详情 |
+|------|------|
+| **问题** | `Starter.java` 是纯 `main()` 方法，手动加载 YAML、手动 init Redis/MQ/ZK |
+| **后果** | 进程靠 ZK 注册的轮询线程保活，无 Spring 生命周期管理、无健康检查 |
+| **修复** | 新建 `TcpApplication.java` + `TcpServerRunner.java`，用 CommandLineRunner 管理初始化 |
+
+### 11.3 缺少 IdleStateHandler
+
+| 项目 | 详情 |
+|------|------|
+| **问题** | `LimServer` pipeline 中有 `HeartBeatHandler` 但缺少 `IdleStateHandler` |
+| **后果** | 心跳检测功能完全无效（无 IdleStateEvent 产生），TCP 连接无超时断开机制 |
+| **修复** | 待修复（非阻断性问题，Phase 2 测试不涉及）
