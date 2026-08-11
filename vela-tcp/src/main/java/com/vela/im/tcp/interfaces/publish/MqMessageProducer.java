@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * <p>Title: MqMessageProducer</p>
  * <p>Description: MQ 消息生产者，网关层将消息投递到逻辑层对应的 RabbitMQ 队列</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

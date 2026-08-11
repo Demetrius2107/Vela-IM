@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * <p>Title: RegistryZK</p>
  * <p>Description: ZooKeeper 注册器，将本机 TCP/WebSocket 服务地址注册到 ZK 指定路径</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

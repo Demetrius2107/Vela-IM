@@ -5,7 +5,7 @@ import com.vela.im.codec.protocol.MessagePack;
 /**
  * <p>Title: BaseProcess</p>
  * <p>Description: 消息处理抽象基类，定义处理流程模板：前置处理 -> 发送消息到 Channel -> 后置处理</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

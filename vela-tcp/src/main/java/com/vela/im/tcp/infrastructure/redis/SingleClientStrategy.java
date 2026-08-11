@@ -11,7 +11,7 @@ import org.redisson.config.SingleServerConfig;
 /**
  * <p>Title: SingleClientStrategy</p>
  * <p>Description: Redis单机模式客户端策略，根据配置构建单机 RedissonClient</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

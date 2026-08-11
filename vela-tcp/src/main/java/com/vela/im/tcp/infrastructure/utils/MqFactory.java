@@ -12,7 +12,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * <p>Title: MqFactory</p>
  * <p>Description: MQ连接工厂，管理 RabbitMQ ConnectionFactory 和 Channel 缓存，提供初始化与获取通道能力</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1
