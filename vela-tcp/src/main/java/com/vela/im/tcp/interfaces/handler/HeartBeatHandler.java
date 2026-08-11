@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * <p>Title: HeartBeatHandler</p>
  * <p>Description: Netty 心跳检测处理器，监听读/写/全空闲事件，超时后执行退后台逻辑</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1
@@ -57,8 +57,12 @@ public class HeartBeatHandler extends ChannelInboundHandlerAdapter {
 
                 long now = System.currentTimeMillis();
 
-                if(lastReadTime != null && now -lastReadTime > heartBeatTime){
-                    // TODO 退后台逻辑
+                // 超过心跳超时未收到客户端 PING（或从未 PING 过），视为死连接执行退后台：
+                // 关闭连接后由 channelInactive -> offlineUserSession 完成 Session/Redis 清理与下线通知
+                if (lastReadTime == null || now - lastReadTime > heartBeatTime) {
+                    log.warn("心跳超时，退后台并关闭连接: remote={}, lastReadTime={}",
+                            ctx.channel().remoteAddress(), lastReadTime);
+                    ctx.close();
                 }
             }
         }
