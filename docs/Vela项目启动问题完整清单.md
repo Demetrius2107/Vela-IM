@@ -308,4 +308,4 @@ Mapper XML 中的表名使用 `im_` 前缀，但数据库实际表名为 `vela_`
 |------|------|
 | **问题** | `LimServer` pipeline 中有 `HeartBeatHandler` 但缺少 `IdleStateHandler` |
 | **后果** | 心跳检测功能完全无效（无 IdleStateEvent 产生），TCP 连接无超时断开机制 |
-| **修复** | 待修复（非阻断性问题，Phase 2 测试不涉及）
+| **修复** | ✅ 已修复（2026-08-11，分支 `fix/tcp-heartbeat-and-test-harness`）：pipeline 补 `IdleStateHandler`（ALL_IDLE = heartBeatTime）；`HeartBeatHandler` 落地退后台逻辑（未 PING 或超时即断开，由 `channelInactive → offlineUserSession` 完成 Session/Redis 清理与下线通知）；`offlineUserSession`/`removeUserSession` 的 Redis 操作容错（清理不因 Redis 异常中断）。配套新增 TCP 心跳端到端测试 3 例 + `TcpApplication` ContextLoadTest |
