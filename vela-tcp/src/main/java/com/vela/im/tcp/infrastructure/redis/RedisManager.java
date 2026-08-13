@@ -7,7 +7,7 @@ import org.redisson.api.RedissonClient;
 /**
  * <p>Title: RedisManager</p>
  * <p>Description: Redis 管理器，封装 Redisson 客户端初始化与用户登录监听器注册</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

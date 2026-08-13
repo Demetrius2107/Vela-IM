@@ -12,6 +12,7 @@ import com.vela.im.tcp.interfaces.publish.MqMessageProducer;
 import com.vela.im.tcp.infrastructure.redis.RedisManager;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.redisson.api.RMap;
 import org.redisson.api.RedissonClient;
@@ -25,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * <p>Title: SessionSocketHolder</p>
  * <p>Description: 用户 Session 与 Netty Channel 的持有者，管理客户端连接映射关系及离线/下线处理</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1
@@ -35,6 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Copyright © 2026 wanqiu All rights reserved
  
  */
+@Slf4j
 public class SessionSocketHolder {
 
     /** 用户客户端与 Channel 的映射关系 */
@@ -138,10 +140,15 @@ public class SessionSocketHolder {
                 .attr(AttributeKey.valueOf(ImConstants.IMEI)).get();
 
         SessionSocketHolder.remove(appId,userId,clientType,imei);
-        RedissonClient redissonClient = RedisManager.getRedissonClient();
-        RMap<Object, Object> map = redissonClient.getMap(appId +
-                ImConstants.Redis.USER_SESSION_PREFIX + userId);
-        map.remove(clientType+":"+imei);
+        // Redis 清理失败不阻断下线通知（尽力而为清理）
+        try {
+            RedissonClient redissonClient = RedisManager.getRedissonClient();
+            RMap<Object, Object> map = redissonClient.getMap(appId +
+                    ImConstants.Redis.USER_SESSION_PREFIX + userId);
+            map.remove(clientType+":"+imei);
+        } catch (Exception e) {
+            log.error("Failed to remove session from Redis, userId={}, imei={}", userId, imei, e);
+        }
 
         MessageHeader messageHeader = new MessageHeader();
         messageHeader.setAppId(appId);
@@ -169,15 +176,20 @@ public class SessionSocketHolder {
         String imei = (String) nioSocketChannel
                 .attr(AttributeKey.valueOf(ImConstants.IMEI)).get();
         SessionSocketHolder.remove(appId,userId,clientType,imei);
-        RedissonClient redissonClient = RedisManager.getRedissonClient();
-        RMap<String, String> map = redissonClient.getMap(appId +
-                ImConstants.Redis.USER_SESSION_PREFIX + userId);
-        String sessionStr = map.get(clientType.toString()+":" + imei);
+        // Redis 状态更新失败不阻断下线通知（尽力而为清理）
+        try {
+            RedissonClient redissonClient = RedisManager.getRedissonClient();
+            RMap<String, String> map = redissonClient.getMap(appId +
+                    ImConstants.Redis.USER_SESSION_PREFIX + userId);
+            String sessionStr = map.get(clientType.toString()+":" + imei);
 
-        if(!StringUtils.isBlank(sessionStr)){
-            UserSession userSession = JSONObject.parseObject(sessionStr, UserSession.class);
-            userSession.setConnectState(ImConnectStatusEnum.OFFLINE_STATUS.getCode());
-            map.put(clientType.toString()+":"+imei, JSONObject.toJSONString(userSession));
+            if(!StringUtils.isBlank(sessionStr)){
+                UserSession userSession = JSONObject.parseObject(sessionStr, UserSession.class);
+                userSession.setConnectState(ImConnectStatusEnum.OFFLINE_STATUS.getCode());
+                map.put(clientType.toString()+":"+imei, JSONObject.toJSONString(userSession));
+            }
+        } catch (Exception e) {
+            log.error("Failed to update offline status in Redis, userId={}, imei={}", userId, imei, e);
         }
 
         MessageHeader messageHeader = new MessageHeader();

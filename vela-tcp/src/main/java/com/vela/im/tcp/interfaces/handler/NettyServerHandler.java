@@ -44,7 +44,7 @@ import java.net.InetAddress;
 /**
  * <p>Title: NettyServerHandler</p>
  * <p>Description: Netty 服务端消息处理器，处理登录/登出、心跳、私聊/群聊消息的路由与分发</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @createTime 2025-03-05

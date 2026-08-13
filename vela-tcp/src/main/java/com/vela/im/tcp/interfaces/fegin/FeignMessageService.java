@@ -8,7 +8,7 @@ import feign.RequestLine;
 /**
  * <p>Title: FeignMessageService</p>
  * <p>Description: Feign 远程调用接口，用于校验消息是否可发送</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

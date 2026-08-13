@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * <p>Title: LimWebSocketServer</p>
  * <p>Description: WebSocket 网关服务器，基于 Netty 构建，处理客户端 WebSocket 长连接消息</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * <p>Title: UserLoginMessageListener</p>
  * <p>Description: 用户登录消息监听器，订阅 Redis 登录频道，根据登录模式处理多端互踢逻辑</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  * <p>多端同步策略：
  * 1 单端登录：踢掉除本 clientType+imei 之外的所有设备
  * 2 双端登录：允许 PC/Mobile 一端 + Web 端，踢掉同端其他设备

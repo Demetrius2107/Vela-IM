@@ -19,7 +19,7 @@ import java.util.concurrent.TimeoutException;
 /**
  * <p>Title: MessageReceiver</p>
  * <p>Description: 消息接收器，监听 RabbitMQ 队列，消费逻辑层投递到网关层的消息并交由 Process 处理</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1

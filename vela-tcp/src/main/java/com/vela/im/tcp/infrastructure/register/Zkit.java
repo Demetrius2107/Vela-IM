@@ -6,7 +6,7 @@ import org.I0Itec.zkclient.ZkClient;
 /**
  * <p>Title: Zkit</p>
  * <p>Description: ZooKeeper 操作工具，封装 ZK 节点创建与路径校验</p>
- * <p>项目名称: Vellastra</p>
+ * <p>项目名称: Vela</p>
  *
  * @author wanqiu
  * @since 1.1
