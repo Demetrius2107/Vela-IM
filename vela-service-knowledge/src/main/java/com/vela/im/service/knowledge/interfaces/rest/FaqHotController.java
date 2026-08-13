@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/** FAQ 热榜接口 */
 @RestController
 @RequestMapping("/v1/knowledge/faq")
 public class FaqHotController {

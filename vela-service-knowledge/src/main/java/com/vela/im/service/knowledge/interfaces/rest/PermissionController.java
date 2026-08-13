@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** 文档权限接口：授权 / 收回 / 权限列表 */
 @RestController
 @RequestMapping("/v1/knowledge/permission")
 public class PermissionController {

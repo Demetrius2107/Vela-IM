@@ -56,6 +56,7 @@ public class DocumentService {
         this.readMapper = readMapper;
     }
 
+    /** 创建文档：初始化状态/软删标记/统计计数，并落首版本与向量索引 */
     public Result<DocumentEntity> create(DocumentEntity entity) {
         if (entity.getAppId() == null || !StringUtils.hasText(entity.getTitle())) {
             return Result.fail(BusinessErrorCode.BAD_REQUEST);
@@ -73,6 +74,7 @@ public class DocumentService {
         return Result.ok(entity);
     }
 
+    /** 文档列表：appId + 可选关键词/分类/状态过滤，按更新时间倒序 */
     public Result<Map<String, Object>> list(Integer appId, String keyword, Long categoryId, Integer status, int page, int size) {
         QueryWrapper<DocumentEntity> q = new QueryWrapper<>();
         q.eq("app_id", appId).eq("is_deleted", 0);
@@ -139,6 +141,7 @@ public class DocumentService {
         return "";
     }
 
+    /** 文档详情：校验可读权限 */
     public Result<DocumentEntity> get(Integer appId, String userId, Long id) {
         DocumentEntity e = mapper.selectById(id);
         if (e == null || (e.getIsDeleted() != null && e.getIsDeleted() == 1)) {
@@ -198,6 +201,7 @@ public class DocumentService {
         return Result.ok(ref);
     }
 
+    /** 更新文档：校验可写权限，更新后自动补摘要/落版本/重建向量索引 */
     public Result<Void> update(Integer appId, String userId, DocumentEntity entity) {
         DocumentEntity e = mapper.selectById(entity.getId());
         if (e == null || (e.getIsDeleted() != null && e.getIsDeleted() == 1)) {
@@ -219,6 +223,7 @@ public class DocumentService {
         return Result.ok();
     }
 
+    /** 软删除：校验可写权限，标记 is_deleted=1 */
     public Result<Void> delete(Integer appId, String userId, Long id) {
         DocumentEntity e = mapper.selectById(id);
         if (e == null) return Result.fail(BusinessErrorCode.DOCUMENT_NOT_FOUND);
@@ -233,6 +238,7 @@ public class DocumentService {
 
     // ==================== 回收站 ====================
 
+    /** 回收站列表：分页查询已软删除文档 */
     public Result<Map<String, Object>> recycleList(Integer appId, int page, int size) {
         QueryWrapper<DocumentEntity> q = new QueryWrapper<>();
         q.eq("app_id", appId).eq("is_deleted", 1).orderByDesc("update_time");
@@ -279,6 +285,7 @@ public class DocumentService {
         return Result.ok();
     }
 
+    /** 分页结果组装 */
     private Result<Map<String, Object>> pageResult(IPage<DocumentEntity> p) {
         Map<String, Object> r = new HashMap<>();
         r.put("list", p.getRecords());

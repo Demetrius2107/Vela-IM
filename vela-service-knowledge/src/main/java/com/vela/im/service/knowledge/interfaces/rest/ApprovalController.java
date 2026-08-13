@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/** 文档发布审批接口：提交审核 / 审批 / 下架 / 待审批列表 */
 @RestController
 @RequestMapping("/v1/knowledge/approval")
 public class ApprovalController {

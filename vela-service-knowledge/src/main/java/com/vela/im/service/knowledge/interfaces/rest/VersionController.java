@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/** 文档版本接口：版本历史 / 回滚 */
 @RestController
 @RequestMapping("/v1/knowledge/version")
 public class VersionController {

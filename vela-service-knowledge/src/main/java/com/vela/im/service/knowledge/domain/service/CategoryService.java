@@ -31,6 +31,7 @@ public class CategoryService {
         this.documentMapper = documentMapper;
     }
 
+    /** 创建分类：校验父分类存在与层级深度限制 */
     public Result<CategoryEntity> create(Integer appId, String name, Long parentId, Integer sort) {
         if (name == null || name.trim().isEmpty()) {
             return Result.fail(BusinessErrorCode.BAD_REQUEST);
@@ -57,6 +58,7 @@ public class CategoryService {
         return Result.ok(e);
     }
 
+    /** 更新分类：改名 / 调整排序 / 更换父级 */
     public Result<Void> update(Long id, String name, Long parentId, Integer sort) {
         CategoryEntity e = categoryMapper.selectById(id);
         if (e == null) return Result.fail(BusinessErrorCode.CATEGORY_NOT_FOUND);
@@ -71,6 +73,7 @@ public class CategoryService {
         return Result.ok();
     }
 
+    /** 删除分类：有子分类或文档时拒绝删除 */
     public Result<Void> delete(Long id) {
         CategoryEntity e = categoryMapper.selectById(id);
         if (e == null) return Result.fail(BusinessErrorCode.CATEGORY_NOT_FOUND);

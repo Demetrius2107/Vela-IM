@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/** 文档收藏接口：收藏 / 取消 / 收藏列表 */
 @RestController
 @RequestMapping("/v1/knowledge/favorite")
 public class FavoriteController {

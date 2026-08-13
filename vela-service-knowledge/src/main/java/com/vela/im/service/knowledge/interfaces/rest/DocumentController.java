@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/** 知识库文档接口：文档 CRUD / 检索 / 预览 / 引用 / 回收站 */
 @RestController
 @RequestMapping("/v1/knowledge")
 public class DocumentController {

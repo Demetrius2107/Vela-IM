@@ -6,6 +6,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+/**
+ * 知识库文档实体（含状态/软删/统计冗余字段）
+ */
 @Data
 @TableName("vela_document")
 public class DocumentEntity {

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/** 阅读统计接口：阅读记录 / 文档统计 */
 @RestController
 @RequestMapping("/v1/knowledge")
 public class ReadStatsController {

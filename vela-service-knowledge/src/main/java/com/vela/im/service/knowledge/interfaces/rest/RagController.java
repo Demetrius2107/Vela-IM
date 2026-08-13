@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+/** RAG 问答与向量索引接口 */
 @RestController
 @RequestMapping("/v1/knowledge")
 public class RagController {

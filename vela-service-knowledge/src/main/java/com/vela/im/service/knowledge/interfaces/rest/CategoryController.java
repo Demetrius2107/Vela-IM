@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/** 知识库分类接口：分类增删改查与树形查询 */
 @RestController
 @RequestMapping("/v1/knowledge/category")
 public class CategoryController {
