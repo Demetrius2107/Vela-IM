@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.vela.im.codec.pack.message.RecallMessageNotifyPack;
 import com.vela.im.service.common.utils.ConversationIdGenerate;
 import com.vela.im.service.common.utils.MessageProducer;
-import com.vela.im.service.conversation.domain.service.ConversationService;
+import com.vela.im.service.message.application.facade.ConversationFacade;
 import com.vela.im.service.common.infrastructure.seq.RedisSeq;
 import com.vela.im.service.common.utils.SnowflakeIdWorker;
 import com.vela.im.shared.types.ClientInfo;
@@ -36,16 +36,16 @@ public class P2PRecallStrategy implements RecallStrategy {
     private static final Logger logger = LoggerFactory.getLogger(P2PRecallStrategy.class);
 
     private final MessageProducer messageProducer;
-    private final ConversationService conversationService;
+    private final ConversationFacade conversationFacade;
     private final RedisTemplate<String, String> redisTemplate;
     private final RedisSeq redisSeq;
 
     public P2PRecallStrategy(MessageProducer messageProducer,
-                             ConversationService conversationService,
+                             ConversationFacade conversationFacade,
                              RedisTemplate<String, String> redisTemplate,
                              RedisSeq redisSeq) {
         this.messageProducer = messageProducer;
-        this.conversationService = conversationService;
+        this.conversationFacade = conversationFacade;
         this.redisTemplate = redisTemplate;
         this.redisSeq = redisSeq;
     }
@@ -65,7 +65,7 @@ public class P2PRecallStrategy implements RecallStrategy {
         offline.setDelFlag(DelFlagEnum.DELETE.getCode());
         offline.setMessageKey(content.getMessageKey());
         offline.setConversationType(ConversationTypeEnum.P2P.getCode());
-        offline.setConversationId(conversationService.convertConversationId(
+        offline.setConversationId(conversationFacade.convertConversationId(
                 offline.getConversationType(), content.getFromId(), content.getToId()));
         offline.setMessageBody(body.getMessageBody());
 

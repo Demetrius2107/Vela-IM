@@ -3,13 +3,12 @@ package com.vela.im.service.message.domain.service;
 
 import com.vela.im.service.common.entity.ImFriendShipEntity;
 import com.vela.im.service.friendship.application.dto.req.GetRelationReq;
-import com.vela.im.service.friendship.domain.service.ImFriendService;
+import com.vela.im.service.message.application.facade.UserRelationFacade;
 import com.vela.im.service.common.entity.ImGroupEntity;
 import com.vela.im.service.common.entity.GetRoleInGroupResp;
 import com.vela.im.service.message.interfaces.feign.GroupServiceFeignClient;
 
 import com.vela.im.service.user.domain.entity.ImUserDataEntity;
-import com.vela.im.service.user.domain.service.ImUserService;
 import com.vela.im.shared.base.Result;
 import com.vela.im.shared.config.ImServerProperties;
 import com.vela.im.shared.types.enums.*;
@@ -31,18 +30,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class CheckSendMessageService {
 
-    private final ImUserService imUserService;
-    private final ImFriendService imFriendService;
+    private final UserRelationFacade userRelationFacade;
     
     private final GroupServiceFeignClient groupServiceFeignClient;
     private final ImServerProperties appConfig;
 
-    public CheckSendMessageService(ImUserService imUserService,
-                                   ImFriendService imFriendService,
+    public CheckSendMessageService(UserRelationFacade userRelationFacade,
                                    GroupServiceFeignClient groupServiceFeignClient,
                                    ImServerProperties appConfig) {
-        this.imUserService = imUserService;
-        this.imFriendService = imFriendService;
+        this.userRelationFacade = userRelationFacade;
         
         this.groupServiceFeignClient = groupServiceFeignClient;
         this.appConfig = appConfig;
@@ -58,7 +54,7 @@ public class CheckSendMessageService {
     public Result checkSenderForvidAndMute(String fromId, Integer appId){
 
         Result<ImUserDataEntity> singleUserInfo
-                = imUserService.getSingleUserInfo(fromId, appId);
+                = userRelationFacade.getSingleUserInfo(fromId, appId);
         if(!singleUserInfo.isOk()){
             return singleUserInfo;
         }
@@ -87,14 +83,14 @@ public class CheckSendMessageService {
         if(appConfig.isSendMessageCheckFriend()){
             // Check from → to friendship
             GetRelationReq fromReq = buildRelationReq(fromId, toId, appId);
-            Result<ImFriendShipEntity> fromRelation = imFriendService.getRelation(fromReq);
+            Result<ImFriendShipEntity> fromRelation = userRelationFacade.getRelation(fromReq);
             if(!fromRelation.isOk()){
                 return fromRelation;
             }
 
             // Check to → from friendship (reverse direction)
             GetRelationReq toReq = buildRelationReq(toId, fromId, appId);
-            Result<ImFriendShipEntity> toRelation = imFriendService.getRelation(toReq);
+            Result<ImFriendShipEntity> toRelation = userRelationFacade.getRelation(toReq);
             if(!toRelation.isOk()){
                 return toRelation;
             }
