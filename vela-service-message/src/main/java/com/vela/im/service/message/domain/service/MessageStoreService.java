@@ -1,7 +1,7 @@
 package com.vela.im.service.message.domain.service;
 
 import com.alibaba.fastjson.JSONObject;
-import com.vela.im.service.conversation.domain.service.ConversationService;
+import com.vela.im.service.message.application.facade.ConversationFacade;
 import com.vela.im.service.common.entity.ImGroupMessageHistoryEntity;
 import com.vela.im.service.common.entity.ImGroupMessageHistoryMapper;
 import com.vela.im.service.message.domain.entity.ImMessageBodyEntity;
@@ -60,7 +60,7 @@ public class MessageStoreService {
     private final ImGroupMessageHistoryMapper imGroupMessageHistoryMapper;
     private final RabbitTemplate rabbitTemplate;
     private final StringRedisTemplate stringRedisTemplate;
-    private final ConversationService conversationService;
+    private final ConversationFacade conversationFacade;
     private final ImServerProperties appConfig;
     private final MessageCompensationStore compensationStore;
     private final ServiceDegradationManager degradationManager;
@@ -87,7 +87,7 @@ public class MessageStoreService {
                                ImGroupMessageHistoryMapper imGroupMessageHistoryMapper,
                                RabbitTemplate rabbitTemplate,
                                StringRedisTemplate stringRedisTemplate,
-                               ConversationService conversationService,
+                               ConversationFacade conversationFacade,
                                ImServerProperties appConfig,
                                MessageCompensationStore compensationStore,
                                ServiceDegradationManager degradationManager,
@@ -98,7 +98,7 @@ public class MessageStoreService {
         this.imGroupMessageHistoryMapper = imGroupMessageHistoryMapper;
         this.rabbitTemplate = rabbitTemplate;
         this.stringRedisTemplate = stringRedisTemplate;
-        this.conversationService = conversationService;
+        this.conversationFacade = conversationFacade;
         this.appConfig = appConfig;
         this.compensationStore = compensationStore;
         this.degradationManager = degradationManager;
@@ -362,7 +362,7 @@ public class MessageStoreService {
         try {
             // Evict oldest if sender queue exceeds limit, persist to DB as fallback
             evictIfExceeded(operations, fromKey);
-            offlineMessage.setConversationId(conversationService.convertConversationId(
+            offlineMessage.setConversationId(conversationFacade.convertConversationId(
                     ConversationTypeEnum.P2P.getCode(),offlineMessage.getFromId(),offlineMessage.getToId()
             ));
             // Insert into sender queue, scored by messageKey
@@ -372,7 +372,7 @@ public class MessageStoreService {
             // Evict oldest if receiver queue exceeds limit
             evictIfExceeded(operations, toKey);
 
-            offlineMessage.setConversationId(conversationService.convertConversationId(
+            offlineMessage.setConversationId(conversationFacade.convertConversationId(
                     ConversationTypeEnum.P2P.getCode(),offlineMessage.getToId(),offlineMessage.getFromId()
             ));
             // Insert into receiver queue
@@ -519,7 +519,7 @@ public class MessageStoreService {
             String toKey = offlineMessage.getAppId() + ":" +
                     ImConstants.Redis.OFFLINE_MESSAGE + ":" +
                     memberId;
-            offlineMessage.setConversationId(conversationService.convertConversationId(
+            offlineMessage.setConversationId(conversationFacade.convertConversationId(
                     ConversationTypeEnum.GROUP.getCode(),memberId,offlineMessage.getToId()
             ));
             try {

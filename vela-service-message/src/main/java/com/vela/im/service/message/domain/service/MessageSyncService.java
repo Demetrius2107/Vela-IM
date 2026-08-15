@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 
-import com.vela.im.service.conversation.domain.service.ConversationService;
+import com.vela.im.service.message.application.facade.ConversationFacade;
 import com.vela.im.service.message.interfaces.feign.GroupServiceFeignClient;
 import com.vela.im.service.message.domain.entity.ImMessageBodyEntity;
 import com.vela.im.service.message.domain.entity.ImMessageHistoryEntity;
@@ -70,7 +70,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MessageSyncService {
 
     private final MessageProducer messageProducer;
-    private final ConversationService conversationService;
+    private final ConversationFacade conversationFacade;
     private final RedisTemplate<String, String> redisTemplate;
     private final ImMessageBodyMapper imMessageBodyMapper;
     private final RedisSeq redisSeq;
@@ -109,7 +109,7 @@ public class MessageSyncService {
     }
 
     public MessageSyncService(MessageProducer messageProducer,
-                              ConversationService conversationService,
+                              ConversationFacade conversationFacade,
                               RedisTemplate<String, String> redisTemplate,
                               ImMessageBodyMapper imMessageBodyMapper,
                               RedisSeq redisSeq,
@@ -123,7 +123,7 @@ public class MessageSyncService {
                               StringRedisTemplate stringRedisTemplate,
                               MessageLockManager messageLockManager) {
         this.messageProducer = messageProducer;
-        this.conversationService = conversationService;
+        this.conversationFacade = conversationFacade;
         this.groupServiceFeignClient = groupServiceFeignClient;
         this.redisTemplate = redisTemplate;
         this.imMessageBodyMapper = imMessageBodyMapper;
@@ -162,7 +162,7 @@ public class MessageSyncService {
      * @param messageContent read receipt content
      */
     public void readMark(MessageReadedContent messageContent) {
-        conversationService.messageMarkRead(messageContent);
+        conversationFacade.messageMarkRead(messageContent);
         MessageReadedPack messageReadedPack = new MessageReadedPack();
         BeanUtils.copyProperties(messageContent,messageReadedPack);
         syncToSender(messageReadedPack,messageContent,MessageCommand.MSG_READED_NOTIFY);
@@ -192,7 +192,7 @@ public class MessageSyncService {
      * @param messageReaded read receipt content
      */
     public void groupReadMark(MessageReadedContent messageReaded) {
-        conversationService.messageMarkRead(messageReaded);
+        conversationFacade.messageMarkRead(messageReaded);
         MessageReadedPack messageReadedPack = new MessageReadedPack();
         BeanUtils.copyProperties(messageReaded,messageReadedPack);
         syncToSender(messageReadedPack,messageReaded, GroupEventCommand.MSG_GROUP_READED_NOTIFY

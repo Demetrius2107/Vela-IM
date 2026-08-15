@@ -5,7 +5,7 @@ import com.vela.im.codec.pack.message.RecallMessageNotifyPack;
 import com.vela.im.service.common.utils.ConversationIdGenerate;
 import com.vela.im.service.message.domain.utils.GroupMessageProducer;
 import com.vela.im.service.common.utils.MessageProducer;
-import com.vela.im.service.conversation.domain.service.ConversationService;
+import com.vela.im.service.message.application.facade.ConversationFacade;
 import com.vela.im.service.message.interfaces.feign.GroupServiceFeignClient;
 import com.vela.im.service.common.infrastructure.seq.RedisSeq;
 import com.vela.im.shared.constants.ImConstants;
@@ -38,20 +38,20 @@ public class GroupRecallStrategy implements RecallStrategy {
     private static final Logger logger = LoggerFactory.getLogger(GroupRecallStrategy.class);
 
     private final MessageProducer messageProducer;
-    private final ConversationService conversationService;
+    private final ConversationFacade conversationFacade;
     private final RedisTemplate<String, String> redisTemplate;
     private final RedisSeq redisSeq;
     private final GroupServiceFeignClient groupServiceFeignClient;
     private final GroupMessageProducer groupMessageProducer;
 
     public GroupRecallStrategy(MessageProducer messageProducer,
-                               ConversationService conversationService,
+                               ConversationFacade conversationFacade,
                                RedisTemplate<String, String> redisTemplate,
                                RedisSeq redisSeq,
                                GroupServiceFeignClient groupServiceFeignClient,
                                GroupMessageProducer groupMessageProducer) {
         this.messageProducer = messageProducer;
-        this.conversationService = conversationService;
+        this.conversationFacade = conversationFacade;
         this.groupServiceFeignClient = groupServiceFeignClient;
         this.redisTemplate = redisTemplate;
         this.redisSeq = redisSeq;
@@ -82,7 +82,7 @@ public class GroupRecallStrategy implements RecallStrategy {
             offline.setDelFlag(DelFlagEnum.DELETE.getCode());
             BeanUtils.copyProperties(content, offline);
             offline.setConversationType(ConversationTypeEnum.GROUP.getCode());
-            offline.setConversationId(conversationService.convertConversationId(
+            offline.setConversationId(conversationFacade.convertConversationId(
                     offline.getConversationType(), content.getFromId(), content.getToId()));
             offline.setMessageBody(body.getMessageBody());
             offline.setMessageSequence(seq);
