@@ -2,6 +2,10 @@ server:
   port: 8012
 
 spring:
+  main:
+    # group 依赖 message/user 模块：跨模块扫描时 message 与 user 各有一个 name="vela-group" 的 FeignClient，
+    # 同名 FeignClientSpecification 会重复注册，此处允许覆盖（与 vela-service-message 一致）
+    allow-bean-definition-overriding: true
   application:
     name: vela-group
   datasource:

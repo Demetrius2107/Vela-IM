@@ -28,6 +28,7 @@ import com.vela.im.shared.types.enums.GroupMemberRoleEnum;
 import com.vela.im.shared.types.enums.GroupStatusEnum;
 import com.vela.im.shared.types.enums.GroupTypeEnum;
 import com.vela.im.shared.types.enums.command.GroupEventCommand;
+import org.springframework.context.annotation.Lazy;
 import com.vela.im.shared.exception.ApplicationException;
 import com.vela.im.shared.types.ClientInfo;
 import com.vela.im.codec.pack.group.AddGroupMemberPack;
@@ -69,8 +70,8 @@ public class ImGroupMemberServiceImpl implements ImGroupMemberService {
 
         public ImGroupMemberServiceImpl(ImGroupMemberMapper imGroupMemberMapper,
                                         ImUserService imUserService,
-                                        ImGroupService groupService,
-                                        ImGroupMemberService groupMemberService,
+                                        @Lazy ImGroupService groupService,
+                                        @Lazy ImGroupMemberService groupMemberService,
                                         CallbackService callbackService,
                                         GroupMessageProducer groupMessageProducer,
                                         ImServerProperties appConfig) {

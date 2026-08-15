@@ -46,6 +46,15 @@ public enum BusinessErrorCode implements ApplicationExceptionEnum {
 
     // ====== Document (97xxx) ======
     DOCUMENT_NOT_FOUND(97001, "文档不存在"),
+    CATEGORY_NOT_FOUND(97002, "分类不存在"),
+    CATEGORY_HAS_CHILDREN(97003, "分类下有子分类，无法删除"),
+    CATEGORY_HAS_DOCUMENTS(97004, "分类下有文档，无法删除"),
+    DOCUMENT_PERMISSION_DENIED(97005, "无权限操作该文档"),
+    DOCUMENT_ALREADY_FAVORITED(97006, "文档已收藏"),
+    DOCUMENT_STATUS_ILLEGAL(97007, "文档状态不允许该操作"),
+    VERSION_NOT_FOUND(97008, "版本不存在"),
+    APPROVAL_REASON_REQUIRED(97009, "驳回必须填写原因"),
+    DOCUMENT_IS_DELETED(97010, "文档已删除"),
 
     // ====== Favorite (98xxx) ======
     FAVORITE_ALREADY_EXISTS(98001, "消息已收藏"),
@@ -62,8 +71,12 @@ public enum BusinessErrorCode implements ApplicationExceptionEnum {
     }
 
     @Override
-    public int getCode() { return code; }
+    public int getCode() {
+        return code;
+    }
 
     @Override
-    public String getError() { return error; }
+    public String getError() {
+        return error;
+    }
 }
