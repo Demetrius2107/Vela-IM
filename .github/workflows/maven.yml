@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +24,18 @@ jobs:
       - name: Build with Maven
         run: mvn -B clean compile --file pom.xml
 
-      - name: Run tests
+      # 离线护栏测试：10 个服务模块 ApplicationContextLoadTest + 知识库 34 个单元测试 + TCP 心跳/上下文测试。
+      # 无需中间件（HikariCP 跳过启动连接、RabbitMQ 监听不自动启动、@MockBean 隔离启动期落库）。
+      - name: Run tests (offline guardrail)
         run: mvn -B test --file pom.xml
+
+      - name: Upload surefire reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          path: '**/target/surefire-reports/**'
+          retention-days: 14
 
       - name: Package
         run: mvn -B package -DskipTests --file pom.xml
