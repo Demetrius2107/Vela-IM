@@ -28,6 +28,7 @@ import com.vela.im.shared.types.enums.command.GroupEventCommand;
 import com.vela.im.shared.exception.ApplicationException;
 import com.vela.im.shared.exception.BaseErrorCode;
 import com.vela.im.shared.types.ClientInfo;
+import org.springframework.context.annotation.Lazy;
 import com.vela.im.shared.types.SyncReq;
 import com.vela.im.shared.types.SyncResp;
 import com.vela.im.codec.pack.group.CreateGroupPack;
@@ -67,7 +68,7 @@ public class ImGroupServiceImpl implements ImGroupService {
     private final RedisSeq redisSeq;
 
     public ImGroupServiceImpl(ImGroupMapper imGroupDataMapper,
-                              ImGroupMemberService groupMemberService,
+                              @Lazy ImGroupMemberService groupMemberService,
                               ImServerProperties appConfig,
                               CallbackService callbackService,
                               GroupMessageProducer groupMessageProducer,

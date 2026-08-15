@@ -127,6 +127,13 @@
             <version>2.2.10.RELEASE</version>
         </dependency>
 
+        <!-- 测试护栏：JUnit5 + SpringBootTest + Mockito（各服务模块共用） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 
