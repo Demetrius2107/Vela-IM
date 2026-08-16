@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -74,7 +75,7 @@ public class GroupMessageService {
         this.groupBroadcastNode = groupBroadcastNode;
 
         // 装配同步管道：群聊校验 → 限流 → 去重
-        this.syncPipeline = new PipeChain<>(List.of(groupValidateNode, rateLimitNode, dedupNode));
+        this.syncPipeline = new PipeChain<>(Arrays.asList(groupValidateNode, rateLimitNode, dedupNode));
 
         // 异步线程池
         final AtomicInteger num = new AtomicInteger(0);
@@ -108,7 +109,7 @@ public class GroupMessageService {
         // 通过同步管道，进入异步广播
         threadPoolExecutor.execute(() -> {
             MessageContext asyncCtx = new MessageContext(messageContent);
-            PipeChain<MessageContext> asyncPipe = new PipeChain<>(List.of(groupBroadcastNode));
+            PipeChain<MessageContext> asyncPipe = new PipeChain<>(Arrays.asList(groupBroadcastNode));
             asyncPipe.process(asyncCtx);
         });
     }

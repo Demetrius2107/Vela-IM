@@ -10,6 +10,7 @@ import com.vela.im.shared.types.enums.BusinessErrorCode;
 import com.vela.im.shared.types.enums.StatusConstants;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -122,7 +123,7 @@ public class BotMarketService {
                         .eq("user_id", userId)
                         .eq("app_id", appId)
                         .eq("status", StatusConstants.BOT_ENABLED));
-        if (subs.isEmpty()) return Result.ok(List.of());
+        if (subs.isEmpty()) return Result.ok(Collections.emptyList());
 
         List<String> botIds = subs.stream().map(ImUserBotEntity::getBotId).collect(Collectors.toList());
         List<ImBotEntity> bots = botMapper.selectList(

@@ -9,6 +9,7 @@ import com.vela.im.shared.base.Result;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -76,7 +77,7 @@ public class GroupJoinController {
         req.setGroupId(groupId);
         GroupMemberDto dto = new GroupMemberDto();
         dto.setMemberId(memberId);
-        req.setMembers(List.of(dto));
+        req.setMembers(Arrays.asList(dto));
         return imGroupMemberService.addMember(req);
     }
 
@@ -88,7 +89,7 @@ public class GroupJoinController {
         req.setGroupId(groupId);
         GroupMemberDto dto = new GroupMemberDto();
         dto.setMemberId(memberId);
-        req.setMembers(List.of(dto));
+        req.setMembers(Arrays.asList(dto));
         return imGroupMemberService.addMember(req);
     }
 }
