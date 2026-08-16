@@ -33,6 +33,9 @@ public class ImConversationSetEntity {
 
     private int isTop;
 
+    /** 是否归档：0-正常，1-已归档（归档会话从列表隐藏，保留记录） */
+    private int isArchive;
+
     private Long sequence;
 
     private Long readedSequence;

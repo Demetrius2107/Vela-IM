@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 
 import com.vela.im.service.conversation.domain.entity.ImConversationSetEntity;
 import com.vela.im.service.conversation.infrastructure.persistence.mapper.ImConversationSetMapper;
+import com.vela.im.service.conversation.application.dto.ArchiveConversationReq;
 import com.vela.im.service.conversation.application.dto.DeleteConversationReq;
 import com.vela.im.service.conversation.application.dto.UpdateConversationReq;
 import com.vela.im.service.common.infrastructure.seq.RedisSeq;
@@ -170,7 +171,48 @@ public class ConversationService {
     }
 
     /**
-     * @description: 会话列表查询（置顶优先 + 最近活跃优先）
+     * @description: 归档/取消归档会话（置顶/免打扰状态一并清除，会话从列表隐藏但保留记录）
+     * @param req 归档请求（isArchive 1-归档 0-取消归档）
+     * @return com.vela.im.shared.Result
+     * @author wanqiu
+     */
+    public Result archiveConversation(ArchiveConversationReq req){
+        if(req.getIsArchive() == null){
+            return Result.fail(ConversationErrorCode.CONVERSATION_UPDATE_PARAM_ERROR);
+        }
+        QueryWrapper<ImConversationSetEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("conversation_id",req.getConversationId());
+        queryWrapper.eq("app_id",req.getAppId());
+        ImConversationSetEntity imConversationSetEntity = imConversationSetMapper.selectOne(queryWrapper);
+        if(imConversationSetEntity != null){
+            long seq = redisSeq.doGetSeq(req.getAppId() + ":" + ImConstants.Sequence.CONVERSATION);
+            imConversationSetEntity.setIsArchive(req.getIsArchive());
+            // 归档时同步清除置顶/免打扰状态，取消归档时恢复为正常会话
+            if(req.getIsArchive() == 1){
+                imConversationSetEntity.setIsTop(0);
+                imConversationSetEntity.setIsMute(0);
+            }
+            imConversationSetEntity.setSequence(seq);
+            imConversationSetMapper.update(imConversationSetEntity,queryWrapper);
+            writeUserSeq.writeUserSeq(req.getAppId(), req.getFromId(),
+                    ImConstants.Sequence.CONVERSATION, seq);
+
+            UpdateConversationPack pack = new UpdateConversationPack();
+            pack.setConversationId(req.getConversationId());
+            pack.setIsMute(imConversationSetEntity.getIsMute());
+            pack.setIsTop(imConversationSetEntity.getIsTop());
+            pack.setSequence(seq);
+            pack.setConversationType(imConversationSetEntity.getConversationType());
+            messageProducer.sendToUserExceptClient(req.getFromId(),
+                    ConversationEventCommand.CONVERSATION_UPDATE,
+                    pack,new ClientInfo(req.getAppId(),req.getClientType(),
+                            req.getImei()));
+        }
+        return Result.ok();
+    }
+
+    /**
+     * @description: 会话列表查询（置顶优先 + 最近活跃优先，默认排除已归档会话）
      * @param fromId 用户 ID
      * @param appId  应用 ID
      * @return 排序后的会话集列表
@@ -180,7 +222,8 @@ public class ConversationService {
         QueryWrapper<ImConversationSetEntity> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("from_id", fromId);
         queryWrapper.eq("app_id", appId);
-        // 置顶会话优先（is_top=1 排最前），同级按 sequence 倒序（最近活跃的会话排前面）
+        // 已归档会话默认不进入会话列表，置顶会话优先（is_top=1 排最前），同级按 sequence 倒序（最近活跃的会话排前面）
+        queryWrapper.eq("is_archive", 0);
         queryWrapper.orderByDesc("is_top");
         queryWrapper.orderByDesc("sequence");
         List<ImConversationSetEntity> list = imConversationSetMapper.selectList(queryWrapper);
