@@ -81,6 +81,7 @@ public class MessageSyncService {
     private final ImMessageHistoryMapper imMessageHistoryMapper;
     private final StringRedisTemplate stringRedisTemplate;
     private final MessageLockManager messageLockManager;
+    private final MessageReadService messageReadService;
 
     private final RecallStrategy p2pRecallStrategy;
     private final RecallStrategy groupRecallStrategy;
@@ -121,7 +122,8 @@ public class MessageSyncService {
                               PendingAckTracker pendingAckTracker,
                               ImMessageHistoryMapper imMessageHistoryMapper,
                               StringRedisTemplate stringRedisTemplate,
-                              MessageLockManager messageLockManager) {
+                              MessageLockManager messageLockManager,
+                              MessageReadService messageReadService) {
         this.messageProducer = messageProducer;
         this.conversationFacade = conversationFacade;
         this.groupServiceFeignClient = groupServiceFeignClient;
@@ -136,6 +138,7 @@ public class MessageSyncService {
         this.imMessageHistoryMapper = imMessageHistoryMapper;
         this.stringRedisTemplate = stringRedisTemplate;
         this.messageLockManager = messageLockManager;
+        this.messageReadService = messageReadService;
     }
 
     /**
@@ -187,12 +190,22 @@ public class MessageSyncService {
 
     /**
      * Handle group message read receipt.
-     * <p>Updates conversation read sequence → syncs to sender's other devices → sends receipt to the message originator.</p>
+     * <p>Updates conversation read sequence → records read member → syncs to sender's other devices → sends receipt to the message originator.</p>
      *
      * @param messageReaded read receipt content
      */
     public void groupReadMark(MessageReadedContent messageReaded) {
         conversationFacade.messageMarkRead(messageReaded);
+        // Record which group member read this message (for read/unread member list)
+        if (messageReaded.getMessageKey() != null && messageReaded.getAppId() != null) {
+            try {
+                messageReadService.markRead(messageReaded.getAppId(),
+                        messageReaded.getGroupId(), messageReaded.getMessageKey(), messageReaded.getFromId());
+            } catch (Exception e) {
+                logger.warn("Record read member failed, msgKey={}, memberId={}, error={}",
+                        messageReaded.getMessageKey(), messageReaded.getFromId(), e.getMessage());
+            }
+        }
         MessageReadedPack messageReadedPack = new MessageReadedPack();
         BeanUtils.copyProperties(messageReaded,messageReadedPack);
         syncToSender(messageReadedPack,messageReaded, GroupEventCommand.MSG_GROUP_READED_NOTIFY

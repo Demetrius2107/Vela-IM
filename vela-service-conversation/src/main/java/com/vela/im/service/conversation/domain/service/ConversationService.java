@@ -106,16 +106,11 @@ public class ConversationService {
      */
     public Result deleteConversation(DeleteConversationReq req){
 
-        //置顶 有免打扰
-//        QueryWrapper<ImConversationSetEntity> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.eq("conversation_id",req.getConversationId());
-//        queryWrapper.eq("app_id",req.getAppId());
-//        ImConversationSetEntity imConversationSetEntity = imConversationSetMapper.selectOne(queryWrapper);
-//        if(imConversationSetEntity != null){
-//            imConversationSetEntity.setIsMute(0);
-//            imConversationSetEntity.setIsTop(0);
-//            imConversationSetMapper.update(imConversationSetEntity,queryWrapper);
-//        }
+        // 删除会话：物理删除会话集记录（置顶/免打扰状态一并清除，会话列表不再出现），并广播删除事件
+        QueryWrapper<ImConversationSetEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("conversation_id",req.getConversationId());
+        queryWrapper.eq("app_id",req.getAppId());
+        imConversationSetMapper.delete(queryWrapper);
 
         if(appConfig.getDeleteConversationSyncMode() == 1){
             DeleteConversationPack pack = new DeleteConversationPack();
@@ -138,7 +133,6 @@ public class ConversationService {
 
 
 
-
         if(req.getIsTop() == null && req.getIsMute() == null){
             return Result.fail(ConversationErrorCode.CONVERSATION_UPDATE_PARAM_ERROR);
         }
@@ -149,7 +143,8 @@ public class ConversationService {
         if(imConversationSetEntity != null){
             long seq = redisSeq.doGetSeq(req.getAppId() + ":" + ImConstants.Sequence.CONVERSATION);
 
-            if(req.getIsMute() != null){
+            // 置顶/免打扰各自独立更新（修复原 isMute 判断写反导致 isTop 分支失效的问题）
+            if(req.getIsTop() != null){
                 imConversationSetEntity.setIsTop(req.getIsTop());
             }
             if(req.getIsMute() != null){
@@ -172,6 +167,24 @@ public class ConversationService {
                             req.getImei()));
         }
         return Result.ok();
+    }
+
+    /**
+     * @description: 会话列表查询（置顶优先 + 最近活跃优先）
+     * @param fromId 用户 ID
+     * @param appId  应用 ID
+     * @return 排序后的会话集列表
+     * @author wanqiu
+     */
+    public Result<List<ImConversationSetEntity>> listConversation(String fromId, Integer appId) {
+        QueryWrapper<ImConversationSetEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("from_id", fromId);
+        queryWrapper.eq("app_id", appId);
+        // 置顶会话优先（is_top=1 排最前），同级按 sequence 倒序（最近活跃的会话排前面）
+        queryWrapper.orderByDesc("is_top");
+        queryWrapper.orderByDesc("sequence");
+        List<ImConversationSetEntity> list = imConversationSetMapper.selectList(queryWrapper);
+        return Result.ok(list);
     }
 
     public Result syncConversationSet(SyncReq req) {

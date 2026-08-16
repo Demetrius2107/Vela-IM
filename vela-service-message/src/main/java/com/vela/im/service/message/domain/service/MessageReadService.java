@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vela.im.service.message.domain.entity.ImMessageReadEntity;
 import com.vela.im.service.message.infrastructure.persistence.mapper.ImMessageReadMapper;
 import com.vela.im.shared.base.Result;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +22,11 @@ public class MessageReadService {
         this.readMapper = readMapper;
     }
 
-    /** 标记消息为已读（幂等） */
+    /**
+     * 标记消息为已读（幂等）。
+     * <p>并发安全：依赖表唯一索引 uk_message_member (message_key, member_id)，
+     * 并发重复插入时捕获 DuplicateKeyException 视为幂等成功。</p>
+     */
     public void markRead(Integer appId, String groupId, Long messageKey, String memberId) {
         QueryWrapper<ImMessageReadEntity> check = new QueryWrapper<>();
         check.eq("message_key", messageKey).eq("member_id", memberId);
@@ -33,7 +38,11 @@ public class MessageReadService {
         entity.setMessageKey(messageKey);
         entity.setMemberId(memberId);
         entity.setReadTime(System.currentTimeMillis());
-        readMapper.insert(entity);
+        try {
+            readMapper.insert(entity);
+        } catch (DuplicateKeyException e) {
+            // 并发重复标记：唯一索引兜底，视为已读成功
+        }
     }
 
     /** 批量标记已读（用于同步离线消息后） */

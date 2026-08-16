@@ -184,12 +184,14 @@ public class ImFriendShipRequestServiceImpl implements ImFriendShipRequestServic
 
     @Override
     public Result addFriendShipRequest(String fromId, FriendDto dto, Integer appId) {
-        return null;
+        // 委托真实实现（addFienshipRequest 为历史拼写方法，承载完整申请逻辑）
+        return addFienshipRequest(fromId, dto, appId);
     }
 
     @Override
     public Result approveFriendRequest(ApproveFriendRequestReq req) {
-        return null;
+        // 委托真实实现（approverFriendRequest 为历史拼写方法，承载完整审批逻辑）
+        return approverFriendRequest(req);
     }
 
     @Override
