@@ -26,6 +26,7 @@ import com.vela.im.tcp.interfaces.publish.MqMessageProducer;
 import com.vela.im.tcp.infrastructure.redis.RedisManager;
 import com.vela.im.shared.trace.TraceIdContext;
 import com.vela.im.tcp.infrastructure.utils.SessionSocketHolder;
+import com.vela.im.tcp.interfaces.utils.ChannelWriteUtil;
 import feign.Feign;
 import feign.Request;
 import feign.jackson.JacksonDecoder;
@@ -182,7 +183,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Message> {
             loginSuccess.setData(loginAckPack);
             loginSuccess.setImei(msg.getMessageHeader().getImei());
             loginSuccess.setAppId(msg.getMessageHeader().getAppId());
-            ctx.channel().writeAndFlush(loginSuccess);
+            ChannelWriteUtil.safeWrite(ctx.channel(), loginSuccess, "login-ack");
         }
         // 登出command
         else if (command == SystemCommand.LOGOUT.getCommand()) {
@@ -248,7 +249,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Message> {
                     MessagePack<Result> ack = new MessagePack<>();
                     ack.setData(responseVO);
                     ack.setCommand(ackCommand);
-                    ctx.channel().writeAndFlush(ack);
+                    ChannelWriteUtil.safeWrite(ctx.channel(), ack, "msg-ack");
                 }
             } catch (Exception e) {
                 log.error("Failed to process message", e);

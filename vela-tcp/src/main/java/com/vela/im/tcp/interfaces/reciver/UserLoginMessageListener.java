@@ -8,6 +8,7 @@ import com.vela.im.shared.types.UserClientDto;
 import com.vela.im.codec.protocol.MessagePack;
 import com.vela.im.tcp.infrastructure.redis.RedisManager;
 import com.vela.im.tcp.infrastructure.utils.SessionSocketHolder;
+import com.vela.im.tcp.interfaces.utils.ChannelWriteUtil;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.util.AttributeKey;
 import org.redisson.api.RTopic;
@@ -74,7 +75,7 @@ public class UserLoginMessageListener {
                             pack.setToId((String) nioSocketChannel.attr(AttributeKey.valueOf(ImConstants.USER_ID)).get());
                             pack.setUserId((String) nioSocketChannel.attr(AttributeKey.valueOf(ImConstants.USER_ID)).get());
                             pack.setCommand(SystemCommand.MUTUALLOGIN.getCommand());
-                            nioSocketChannel.writeAndFlush(pack);
+                            ChannelWriteUtil.safeWrite(nioSocketChannel, pack, "mutual-login-notify");
                         }
                     }
                     // 双端登录：Web 端不做处理，PC/Mobile 同端互踢
@@ -94,7 +95,7 @@ public class UserLoginMessageListener {
                             pack.setToId((String) nioSocketChannel.attr(AttributeKey.valueOf(ImConstants.USER_ID)).get());
                             pack.setUserId((String) nioSocketChannel.attr(AttributeKey.valueOf(ImConstants.USER_ID)).get());
                             pack.setCommand(SystemCommand.MUTUALLOGIN.getCommand());
-                            nioSocketChannel.writeAndFlush(pack);
+                            ChannelWriteUtil.safeWrite(nioSocketChannel, pack, "mutual-login-notify");
                         }
                     }
                     // 三端登录：手机/PC 同端互踢，Web 不做处理
@@ -126,7 +127,7 @@ public class UserLoginMessageListener {
                             pack.setToId((String) nioSocketChannel.attr(AttributeKey.valueOf(ImConstants.USER_ID)).get());
                             pack.setUserId((String) nioSocketChannel.attr(AttributeKey.valueOf(ImConstants.USER_ID)).get());
                             pack.setCommand(SystemCommand.MUTUALLOGIN.getCommand());
-                            nioSocketChannel.writeAndFlush(pack);
+                            ChannelWriteUtil.safeWrite(nioSocketChannel, pack, "mutual-login-notify");
                         }
                     }
                 }
