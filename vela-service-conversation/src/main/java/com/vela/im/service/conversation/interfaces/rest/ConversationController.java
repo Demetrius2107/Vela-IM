@@ -1,5 +1,6 @@
 package com.vela.im.service.conversation.interfaces.rest;
 
+import com.vela.im.service.conversation.application.dto.ArchiveConversationReq;
 import com.vela.im.service.conversation.application.dto.DeleteConversationReq;
 import com.vela.im.service.conversation.application.dto.UpdateConversationReq;
 import com.vela.im.service.conversation.domain.service.ConversationService;
@@ -48,6 +49,14 @@ public class ConversationController {
         req.setAppId(appId);
 //        req.setOperater(identifier);
         return conversationService.updateConversation(req);
+    }
+
+    @RequestMapping("/archiveConversation")
+    public Result archiveConversation(@RequestBody @Validated ArchiveConversationReq
+                                                 req, Integer appId, String identifier)  {
+        req.setAppId(appId);
+//        req.setOperater(identifier);
+        return conversationService.archiveConversation(req);
     }
 
     @RequestMapping("/syncConversationList")
