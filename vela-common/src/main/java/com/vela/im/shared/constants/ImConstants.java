@@ -98,6 +98,21 @@ public class ImConstants {
         public static final String USER_SESSION_PREFIX = ":userSession:";
 
         /**
+         * 用户在线状态订阅前缀（正向索引），appId + :userSubscribe: + 订阅者，集合存被订阅用户
+         */
+        public static final String USER_SUBSCRIBE_PREFIX = ":userSubscribe:";
+
+        /**
+         * 用户在线状态订阅前缀（反向索引），appId + :userSubscribed: + 被订阅用户，集合存订阅者
+         */
+        public static final String USER_SUBSCRIBED_PREFIX = ":userSubscribed:";
+
+        /**
+         * 用户自定义状态前缀，appId + :userCustomStatus: + userId，值为 customStatus|customText
+         */
+        public static final String USER_CUSTOM_STATUS_PREFIX = ":userCustomStatus:";
+
+        /**
          * 缓存客户端消息防重，格式：appId + :cacheMessage: + messageId
          */
         public static final String CACHE_MESSAGE = "cacheMessage";
