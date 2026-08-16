@@ -19,6 +19,9 @@ import lombok.Data;
 @Data
 public class MessageReadedContent extends ClientInfo {
 
+    /** 消息Key，关联具体消息 */
+    private Long messageKey;
+
     private long messageSequence;
 
     private String fromId;
