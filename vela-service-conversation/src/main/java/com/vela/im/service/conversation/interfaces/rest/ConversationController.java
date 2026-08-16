@@ -56,4 +56,9 @@ public class ConversationController {
         return conversationService.syncConversationSet(req);
     }
 
+    @RequestMapping("/listConversation")
+    public Result listConversation(String fromId, Integer appId)  {
+        return conversationService.listConversation(fromId, appId);
+    }
+
 }
