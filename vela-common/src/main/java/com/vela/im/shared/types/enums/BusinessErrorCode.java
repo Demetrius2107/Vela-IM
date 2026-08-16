@@ -43,6 +43,7 @@ public enum BusinessErrorCode implements ApplicationExceptionEnum {
     TODO_NOT_FOUND(96002, "待办不存在"),
     APPROVAL_NOT_FOUND(96003, "审批不存在"),
     APPROVAL_ALREADY_PROCESSED(96004, "审批已处理"),
+    APPROVAL_NOT_CURRENT_APPROVER(96005, "非当前层审批人无权审批"),
 
     // ====== Document (97xxx) ======
     DOCUMENT_NOT_FOUND(97001, "文档不存在"),

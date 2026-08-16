@@ -34,6 +34,9 @@ public class ApprovalController {
         return service.approve(id, approverId, comment, passed);
     }
 
+    @PostMapping("/recall")
+    public Result<Void> recall(@RequestParam Long id) { return service.recall(id); }
+
     @PostMapping("/delete")
     public Result<Void> delete(@RequestParam Long id) { return service.delete(id); }
 }
